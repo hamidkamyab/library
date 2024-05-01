@@ -1,30 +1,65 @@
+import { useEffect, useState } from "react";
 import * as Vsc from "react-icons/vsc";
+import View from "./View";
+
+const getBooksLS = ()=>{
+  const bookList = JSON.parse(localStorage.getItem('books'));
+  if(bookList != null){
+    return bookList;
+  }else{
+    return [];
+  }
+}
 
 function App() {
+  
+  const [books,setBooks] = useState(getBooksLS());
+  const [title,setTitle] = useState('');
+  const [author,setAuthor] = useState('');
+  const [code,setCode] = useState('');
+
+
+  const addBook = (e)=>{
+    e.preventDefault();
+    const book = {
+      title,author,code
+    }
+    setBooks([...books,book])
+  }
+
+  useEffect(() => {
+    if(books != []){
+      localStorage.setItem('books',JSON.stringify(books));
+    }
+  }, [books]);
+
   return (
     <div className="App vh-100 d-flex flex-column justify-content-between">
       <div className="main container">
 
         <div className="head d-flex align-items-center flex-column p-4">
-          <h2 className="text-center">لیست کتــاب ها</h2>
-          <span className="text-center">لیست کتاب های خود را به کتابخانه اضافه کنید.</span>
+          <h2 className="d-flex align-items-center gap-2">
+            <Vsc.VscBook />
+            <p className="m-0 p-0">لیست کتــاب ها</p>
+          </h2>
+          <span className="text-center">کتاب های خود را به کتابخانه اضافه کنید.</span>
         </div>
 
         <div className="row">
           <div className="col-5 p-5">
             <div className="form-container p-4">
-              <form action="" className="d-flex flex-column gap-3">
+              <form action="" className="d-flex flex-column gap-3" onSubmit={(e)=>addBook(e)}>
                 <div className="form-group">
                   <label htmlFor="title">عنوان (نام) کتاب:</label>
-                  <input type="text" id="title" className="form-control form-control-sm" />
+                  <input type="text" id="title" className="form-control form-control-sm" onChange={(e)=>setTitle(e.target.value)} />
                 </div>
                 <div className="form-group">
                   <label htmlFor="author">نویسنده:</label>
-                  <input type="text" id="author" className="form-control form-control-sm" />
+                  <input type="text" id="author" className="form-control form-control-sm" onChange={(e)=>setAuthor(e.target.value)} />
                 </div>
                 <div className="form-group">
                   <label htmlFor="code">کد:</label>
-                  <input type="text" id="code" className="form-control form-control-sm" />
+                  <input type="text" id="code" className="form-control form-control-sm" onChange={(e)=>setCode(e.target.value)} />
                 </div>
                 <button className="btn btn-sm w-100 btn-success">افـــزودن</button>
               </form>
@@ -36,25 +71,23 @@ function App() {
 
               <table className="table table-sm">
                 <thead className="border-1 border-top-0 border-start-0 border-end-0 border-black">
+                  <tr>
                   <th>کد</th>
                   <th>نام کتاب</th>
                   <th>نویسنده</th>
                   <th className="text-center">حذف</th>
+                  </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>مزرعه حیوانات</td>
-                    <td>جورج اورول</td>
-                    <td className="text-center delete"><Vsc.VscTrash size={18} role="button" /></td>
-                  </tr>
-
-                  <tr>
-                    <td>2</td>
-                    <td>1984</td>
-                    <td>جورج اورول</td>
-                    <td className="text-center delete"><Vsc.VscTrash size={18} role="button" /></td>
-                  </tr>
+                  {
+                    books.length > 0?
+                    <View books={books} />
+                    :
+                    <tr>
+                      <td colSpan={4} className="text-center p-2 text-danger bg-light">کتابی در کتابخانه ثبت نشده است!</td>
+                    </tr>
+                    
+                  }
                 </tbody>
               </table>
 

@@ -23,11 +23,12 @@ body {
 }
 
 .list-container table th {
-    font-size: 14px;
+    font-size: 12px;
     padding: 2px 8px;
+    background-color: transparent;
 }
 
-.list-container table td {
+.list-container table tbody td {
     font-size: 14px;
     font-weight: 400;
     padding: 4px 8px;
@@ -38,7 +39,7 @@ body {
     -moz-transition: 0.2s ease-in;
 }
 
-.list-container table tr:hover td {
+.list-container table tbody tr:hover td {
     background-color: #f1f2f6;
     transition: 0.2s ease-in;
     -o-transition: 0.2s ease-in;
@@ -46,6 +47,6 @@ body {
     -moz-transition: 0.2s ease-in;
 }
 
-.list-container table tr:hover td.delete {
+.list-container table tbody tr:hover td.delete {
     color: #ff4757;
 }
