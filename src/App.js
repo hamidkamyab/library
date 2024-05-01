@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import * as Vsc from "react-icons/vsc";
 import View from "./View";
+import Swal from "sweetalert2";
 
 const getBooksLS = ()=>{
   const bookList = JSON.parse(localStorage.getItem('books'));
@@ -24,7 +25,27 @@ function App() {
     const book = {
       title,author,code
     }
-    setBooks([...books,book])
+    const cecked = checkCode(code)
+    if(cecked){
+      setBooks([...books,book]) 
+    }else{
+      Swal.fire(
+        {
+          title:'کد تکراری!',
+          text: "این کد قبلا ثبت شده است، کد کتاب نمی تواند تکراری باشد!",
+          icon:'warning'
+        })
+    }
+  }
+
+  const checkCode = (code) =>{
+    let res = true;
+    books.filter((item, index) => {
+      if(item.code == code){
+        res = false;
+      }
+    });
+    return res;
   }
 
   useEffect(() => {
