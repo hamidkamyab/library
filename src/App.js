@@ -40,12 +40,20 @@ function App() {
 
   const checkCode = (code) =>{
     let res = true;
-    books.filter((item, index) => {
+    books.map((item, index) => {
       if(item.code == code){
         res = false;
       }
     });
     return res;
+  }
+
+  const delBook = (target)=>{
+    const filterBooks = books.filter((book,index)=>{
+      return book.code !== target;
+    })
+
+    setBooks(filterBooks)
   }
 
   useEffect(() => {
@@ -102,7 +110,7 @@ function App() {
                 <tbody>
                   {
                     books.length > 0?
-                    <View books={books} />
+                    <View books={books} delBook={delBook} />
                     :
                     <tr>
                       <td colSpan={4} className="text-center p-2 text-danger bg-light">کتابی در کتابخانه ثبت نشده است!</td>
@@ -112,7 +120,7 @@ function App() {
                 </tbody>
               </table>
 
-              <button className="btn btn-sm btn-danger w-100">حذف همه</button>
+              <button className="btn btn-sm btn-danger w-100" onClick={()=>setBooks([])}>حذف همه</button>
             </div>
           </div>
         </div>
